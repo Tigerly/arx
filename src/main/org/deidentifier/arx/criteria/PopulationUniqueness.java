@@ -152,6 +152,11 @@ public class PopulationUniqueness extends RiskBasedCriterion { // NO_UCD
     }
 
     @Override
+    public boolean isLocalRecodingWithEstimatesSupported() {
+        return false;
+    }
+    
+    @Override
     public ElementData render() {
         ElementData result = new ElementData("Population uniqueness");
         result.addProperty("Threshold", super.getRiskThreshold());

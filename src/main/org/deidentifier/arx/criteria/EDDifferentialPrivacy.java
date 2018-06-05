@@ -220,6 +220,11 @@ public class EDDifferentialPrivacy extends ImplicitPrivacyCriterion {
     }
     
     @Override
+    public boolean isLocalRecodingWithEstimatesSupported() {
+        return false;
+    }
+    
+    @Override
     public boolean isMinimalClassSizeAvailable() {
         return true;
     }

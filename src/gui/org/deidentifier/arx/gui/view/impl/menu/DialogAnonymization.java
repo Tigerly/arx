@@ -95,7 +95,13 @@ public class DialogAnonymization extends TitleAreaDialog {
         // Determine if local recoding is available
         this.localRecodingAvailable = true;
         for (PrivacyCriterion c : model.getInputConfig().getCriteria()) {
-            if (!c.isLocalRecodingSupported()) {
+
+            // Reason
+            boolean allowed = c.isLocalRecodingSupported() || 
+                             (c.isLocalRecodingWithEstimatesSupported() && model.getInputConfig().isLocalRecodingWithEstimatesEnabled());
+            
+            // Check
+            if (!allowed) {
                 this.localRecodingAvailable = false;
                 break;
             }

@@ -144,12 +144,13 @@ public class KMap extends ImplicitPrivacyCriterion {
     
     @Override
     public PrivacyCriterion clone(DataSubset subset) {
-        if (!isLocalRecodingSupported()) {
-            throw new UnsupportedOperationException("Local recoding is not supported by this model");
-        }
         // We replace estimated k-map with an according instance of k-anonymity.
         // This avoids the re-calculation of k' 
-        return new KAnonymity(this.getDerivedK());
+        if (!isAccurate()) {
+            return new KAnonymity(this.getDerivedK());
+        } else {
+            return new KMap(getK(), subset);
+        }
     }
     
     @Override

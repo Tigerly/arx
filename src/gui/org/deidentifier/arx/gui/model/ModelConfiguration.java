@@ -148,15 +148,6 @@ public class ModelConfiguration implements Serializable, Cloneable {
     }
     
     /**
-     * Delegates to an instance of ARXConfiguration.
-     *
-     * @return
-     */
-    public double getSuppressionLimit() {
-        return config.getSuppressionLimit();
-    }
-    
-    /**
      * Returns the associated attribute weight.
      *
      * @param attribute
@@ -223,7 +214,6 @@ public class ModelConfiguration implements Serializable, Cloneable {
         return config.getHeuristicSearchThreshold();
     }
     
-
     /**
      * @return
      * @see org.deidentifier.arx.ARXConfiguration#getHeuristicSearchTimeLimit()
@@ -232,6 +222,7 @@ public class ModelConfiguration implements Serializable, Cloneable {
         return config.getHeuristicSearchTimeLimit();
     }
     
+
     /**
      * Returns the set of all assigned hierarchies.
      *
@@ -240,7 +231,7 @@ public class ModelConfiguration implements Serializable, Cloneable {
     public Map<String, Hierarchy> getHierarchies() {
         return this.hierarchies;
     }
-
+    
     /**
      * Returns the assigned hierarchy, if any. Else null.
      *
@@ -303,7 +294,7 @@ public class ModelConfiguration implements Serializable, Cloneable {
         }
         return this.microAggregationFunctions.get(attribute);
     }
-    
+
     /**
      * Returns the associated handling of missing data
      * @param attribute
@@ -355,6 +346,15 @@ public class ModelConfiguration implements Serializable, Cloneable {
      */
     public RowSet getResearchSubset() {
         return researchSubset;
+    }
+    
+    /**
+     * Delegates to an instance of ARXConfiguration.
+     *
+     * @return
+     */
+    public double getSuppressionLimit() {
+        return config.getSuppressionLimit();
     }
     
     /**
@@ -416,6 +416,14 @@ public class ModelConfiguration implements Serializable, Cloneable {
     }
     
     /**
+     * Returns whether local recoding with estimates is enabled
+     * @return
+     */
+    public boolean isLocalRecodingWithEstimatesEnabled() {
+        return this.config.isLocalRecodingWithEstimatesEnabled();
+    }
+    
+    /**
      * Has the config been modified.
      *
      * @return
@@ -440,14 +448,14 @@ public class ModelConfiguration implements Serializable, Cloneable {
     public boolean isSuppressionAlwaysEnabled() {
         return config.isSuppressionAlwaysEnabled();
     }
-    
+
     /**
      * Removes all criteria.
      */
     public void removeAllCriteria() {
         this.getCriteria().clear();
     }
-
+    
     /**
      * Removes a hierarchy.
      *
@@ -487,16 +495,6 @@ public class ModelConfiguration implements Serializable, Cloneable {
             this.setModified();
         }
         this.config.getCostBenefitConfiguration().setAdversaryGain(adversaryGain);
-    }
-    
-    /**
-     * Delegates to an instance of ARXConfiguration.
-     *
-     * @param supp
-     */
-    public void setSuppressionLimit(double supp) {
-        setModified();
-        config.setSuppressionLimit(supp);
     }
     
     /**
@@ -587,6 +585,14 @@ public class ModelConfiguration implements Serializable, Cloneable {
     }
     
     /**
+     * Sets whether local recoding with estimates is enabled
+     * @param enabled
+     */
+    public void setLocalRecodingWithEstimatesEnabled(boolean enabled) {
+        this.config.setLocalRecodingWithEstimatesEnabled(enabled);
+    }
+    
+    /**
      * Maximum generalization.
      *
      * @param attribute
@@ -661,7 +667,8 @@ public class ModelConfiguration implements Serializable, Cloneable {
         setModified();
         config.setPracticalMonotonicity(assumeMonotonicity);
     }
-    
+
+
     /**
      * @param publisherBenefit the publisherBenefit to set
      */
@@ -672,7 +679,6 @@ public class ModelConfiguration implements Serializable, Cloneable {
         this.config.getCostBenefitConfiguration().setPublisherBenefit(publisherBenefit);
     }
 
-
     /**
      * @param publisherLoss the publisherLoss to set
      */
@@ -682,7 +688,7 @@ public class ModelConfiguration implements Serializable, Cloneable {
         }
         this.config.getCostBenefitConfiguration().setPublisherLoss(publisherLoss);
     }
-
+    
     /**
      * Sets the current research subset.
      *
@@ -692,7 +698,7 @@ public class ModelConfiguration implements Serializable, Cloneable {
         setModified();
         this.researchSubset = subset;
     }
-    
+
     /**
      * @param enabled
      * @see org.deidentifier.arx.ARXConfiguration#setSuppressionAlwaysEnabled(boolean)
@@ -700,6 +706,16 @@ public class ModelConfiguration implements Serializable, Cloneable {
     public void setSuppressionAlwaysEnabled(boolean enabled) {
         setModified();
         config.setSuppressionAlwaysEnabled(enabled);
+    }
+
+    /**
+     * Delegates to an instance of ARXConfiguration.
+     *
+     * @param supp
+     */
+    public void setSuppressionLimit(double supp) {
+        setModified();
+        config.setSuppressionLimit(supp);
     }
 
     /**
@@ -732,7 +748,7 @@ public class ModelConfiguration implements Serializable, Cloneable {
     public void setUnmodified() {
         this.modified = false;
     }
-
+    
     /**
      * Mark as modified.
      */

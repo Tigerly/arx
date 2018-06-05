@@ -60,6 +60,11 @@ public class SampleUniqueness extends RiskBasedCriterion{
     }
 
     @Override
+    public boolean isLocalRecodingWithEstimatesSupported() {
+        return false;
+    }
+    
+    @Override
     public ElementData render() {
         ElementData result = new ElementData("Sample uniqueness");
         result.addProperty("Threshold", super.getRiskThreshold());

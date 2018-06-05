@@ -454,7 +454,13 @@ public class ARXResult {
         
         // Check if optimizable
         for (PrivacyCriterion c : config.getPrivacyModels()) {
-            if (!c.isLocalRecodingSupported()) {
+            
+            // Reason
+            boolean allowed = c.isLocalRecodingSupported() || 
+                             (c.isLocalRecodingWithEstimatesSupported() && config.isLocalRecodingWithEstimatesEnabled());
+            
+            // Check
+            if (!allowed) {
                 return false;
             }
         }

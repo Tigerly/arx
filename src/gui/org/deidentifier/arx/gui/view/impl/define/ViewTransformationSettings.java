@@ -62,6 +62,9 @@ public class ViewTransformationSettings implements IView {
     
     /** View. */
     private Button                buttonPracticalMonotonicity;
+
+    /** View. */
+    private Button                buttonLocalTransformationWithEstimates;
     
     /** View. */
     private Composite             root;
@@ -178,13 +181,11 @@ public class ViewTransformationSettings implements IView {
         d2.minimumHeight = LABEL_HEIGHT;
         m2Label.setLayoutData(d2);
 
-        final GridData d82 = SWTUtil.createFillHorizontallyGridData();
-        d82.horizontalSpan = 3;
         buttonPracticalMonotonicity = new Button(group, SWT.CHECK);
         buttonPracticalMonotonicity.setText(Resources.getMessage("CriterionDefinitionView.53")); //$NON-NLS-1$
         buttonPracticalMonotonicity.setSelection(false);
         buttonPracticalMonotonicity.setEnabled(false);
-        buttonPracticalMonotonicity.setLayoutData(d82);
+        buttonPracticalMonotonicity.setLayoutData(SWTUtil.createGridData());
         buttonPracticalMonotonicity.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(final SelectionEvent arg0) {
@@ -192,7 +193,21 @@ public class ViewTransformationSettings implements IView {
                      .setPracticalMonotonicity(buttonPracticalMonotonicity.getSelection());
             }
         });
-        
+
+        GridData gd1 = SWTUtil.createFillHorizontallyGridData();
+        gd1.horizontalSpan = 2;
+        buttonLocalTransformationWithEstimates = new Button(group, SWT.CHECK);
+        buttonLocalTransformationWithEstimates.setText(Resources.getMessage("CriterionDefinitionView.132")); //$NON-NLS-1$
+        buttonLocalTransformationWithEstimates.setSelection(false);
+        buttonLocalTransformationWithEstimates.setEnabled(false);
+        buttonLocalTransformationWithEstimates.setLayoutData(gd1);
+        buttonLocalTransformationWithEstimates.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(final SelectionEvent arg0) {
+                model.getInputConfig()
+                     .setLocalRecodingWithEstimatesEnabled(buttonLocalTransformationWithEstimates.getSelection());
+            }
+        });
 
         // Create slider for precomputation threshold
         final Label sLabel2 = new Label(group, SWT.PUSH);
@@ -265,6 +280,7 @@ public class ViewTransformationSettings implements IView {
         sliderOutliers.setSelection(SWTUtil.doubleToSlider(0d, 0.999d, model.getInputConfig().getSuppressionLimit()));
         labelOutliers.setText(SWTUtil.getPrettyString(model.getInputConfig().getSuppressionLimit()*100d)+"%");
         buttonPracticalMonotonicity.setSelection(model.getInputConfig().isPracticalMonotonicity());
+        buttonLocalTransformationWithEstimates.setSelection(model.getInputConfig().isLocalRecodingWithEstimatesEnabled());
         
         // Enable
         root.setRedraw(true);

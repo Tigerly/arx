@@ -66,8 +66,8 @@ public abstract class PrivacyCriterion implements Serializable{
      * Clone for local recoding
      */
     public PrivacyCriterion clone(DataSubset subset) {
-        if (!isLocalRecodingSupported()) {
-            throw new UnsupportedOperationException("Local recoding is not supported by this model");
+        if (!isLocalRecodingSupported() && !isLocalRecodingWithEstimatesSupported()) {
+            throw new UnsupportedOperationException("Local recoding (even with estimates) is not supported by this model");
         } else if (this.isSubsetAvailable()) {
             throw new UnsupportedOperationException("This model must override clone(subset)");
         }
@@ -161,6 +161,14 @@ public abstract class PrivacyCriterion implements Serializable{
      * @return
      */
     public abstract boolean isLocalRecodingSupported();
+    
+    /**
+     * Override this to prevent local recoding with estimates
+     * @return
+     */
+    public boolean isLocalRecodingWithEstimatesSupported() {
+        return true;
+    }
 
     /**
      * If a privacy model provides a prosecutor risk threshold, it should override this method to enable optimizations

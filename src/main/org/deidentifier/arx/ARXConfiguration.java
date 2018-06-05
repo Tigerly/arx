@@ -374,6 +374,9 @@ public class ARXConfiguration implements Serializable, Cloneable {
 
     /** Number of output records */
     private int                                numOutputRecords                      = 0;
+    
+    /** Local recoding with estimates*/
+    private Boolean                            allowLocalRecodingWithEstimates      = false;
 
     /**
      * Creates a new configuration without tuple suppression.
@@ -502,6 +505,7 @@ public class ARXConfiguration implements Serializable, Cloneable {
         result.heuristicSearchThreshold = this.heuristicSearchThreshold;
         result.heuristicSearchTimeLimit = this.heuristicSearchTimeLimit;
         result.costBenefitConfiguration = this.getCostBenefitConfiguration().clone();
+        result.allowLocalRecodingWithEstimates = this.allowLocalRecodingWithEstimates;
         if (this.attributeWeights != null) {
             result.attributeWeights = new HashMap<String, Double>(this.attributeWeights);
         } else {
@@ -781,6 +785,19 @@ public class ARXConfiguration implements Serializable, Cloneable {
     }
     
     /**
+     * Returns whether local recoding may be performed using privacy models for which
+     * exact guarantees cannot be provided when local recoding is used. In this case, the
+     * size of population cells may be overestimated.
+     * @return
+     */
+    public boolean isLocalRecodingWithEstimatesEnabled() {
+        if (this.allowLocalRecodingWithEstimates == null) {
+            this.allowLocalRecodingWithEstimates = false;
+        }
+        return this.allowLocalRecodingWithEstimates;
+    }
+    
+    /**
      * Is practical monotonicity assumed.
      *
      * @return
@@ -937,6 +954,17 @@ public class ARXConfiguration implements Serializable, Cloneable {
         if (numberOfTransformations <= 0) { throw new IllegalArgumentException("Parameter must be > 0"); }
         this.heuristicSearchThreshold = numberOfTransformations;
     }
+
+    /**
+     * Sets whether local recoding may be performed using privacy models for which
+     * exact guarantees cannot be provided when local recoding is used. In this case, 
+     * the size of population cells may be overestimated.
+     * @return
+     */
+    public void setLocalRecodingWithEstimatesEnabled(boolean enabled) {
+        this.allowLocalRecodingWithEstimates = enabled;
+    }
+    
     /**
      * The heuristic search algorithm will terminate after the given number of milliseconds.
      * The default is 30 seconds.
@@ -1086,8 +1114,14 @@ public class ARXConfiguration implements Serializable, Cloneable {
 
         // Check, if we can do this
         for (PrivacyCriterion criterion : this.getPrivacyModels()) {
-            if (!criterion.isLocalRecodingSupported()) {
-                throw new IllegalStateException("Local recoding not supported.");
+            
+            // Reason
+            boolean allowed = criterion.isLocalRecodingSupported() || 
+                             (criterion.isLocalRecodingWithEstimatesSupported() && this.isLocalRecodingWithEstimatesEnabled());
+            
+            // Check
+            if (!allowed) {
+                throw new IllegalStateException("Local recoding not supported. You can try to enable local recoding with estimates.");
             }
         }
         
