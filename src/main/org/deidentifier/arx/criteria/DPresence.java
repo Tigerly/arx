@@ -77,8 +77,13 @@ public class DPresence extends ImplicitPrivacyCriterion {
     }
         
     @Override
-    public DPresence clone() {
+    public PrivacyCriterion clone() {
         return new DPresence(this.getDMin(), this.getDMax(), this.getDataSubset().clone());
+    }
+
+    @Override
+    public PrivacyCriterion clone(DataSubset subset) {
+        return new DPresence(this.getDMin(), this.getDMax(), subset);
     }
     
     @Override

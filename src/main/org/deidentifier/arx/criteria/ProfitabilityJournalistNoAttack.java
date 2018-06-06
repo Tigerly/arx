@@ -57,7 +57,7 @@ public class ProfitabilityJournalistNoAttack extends ProfitabilityProsecutorNoAt
     
     @Override
     public PrivacyCriterion clone(DataSubset subset) {
-        throw new UnsupportedOperationException("Local recoding is not supported by this model");
+        return new ProfitabilityJournalistNoAttack(subset);
     }
     
     @Override
